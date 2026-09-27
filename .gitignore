@@ -1,0 +1,51 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# data & caches (never in git)
+# leading slash = repo root only, so src/sartransfer/data/ is NOT matched
+/data/
+/scripts/data/
+/datasets/
+/cache/
+/features/
+/checkpoints/
+*.zip
+*.tif
+*.tiff
+*.png
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.tar
+*.jsonl
+
+# results: never in git. CSVs and figures live on Drive.
+results/**
+!results/.gitkeep
+
+# python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# editors / os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# local model weights + vendored remote code copies for review -- never in git
+/weights/
+*.safetensors

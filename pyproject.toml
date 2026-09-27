@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sartransfer"
+version = "1.0.0"
+description = "Do frozen photo- and satellite-pretrained encoders transfer to SAR? Glacier calving fronts on CaFFe."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+# What the code imports. Google Colab ships all of these; the notebooks install
+# the encoder-specific extras below at run time when they are missing.
+dependencies = [
+    "numpy",
+    "pandas",
+    "pillow",
+    "scipy",
+    "scikit-image",
+    "scikit-learn",
+    "matplotlib",
+    "psutil",
+    "torch",
+    "transformers",
+    "huggingface_hub",
+]
+
+[project.optional-dependencies]
+radio = ["timm", "einops", "open_clip_torch"]       # C-RADIOv4-H remote code
+terramind = ["terratorch"]                           # TerraMind
+viz = ["fiftyone"]                                   # FiftyOne viewer: notebook 10, scripts/
+dev = ["ruff"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
