@@ -24,8 +24,12 @@ Zone maps use the official grey values: 0 NA, 64 stone, 127 glacier, 254 ocean.
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import numpy as np
+
+if TYPE_CHECKING:                            # annotations only; pandas stays a lazy import
+    import pandas as pd
 
 GREY_OF_CLASS4 = np.array([0, 64, 127, 254], dtype=np.uint8)   # na, stone, glacier, ocean
 METER_THRESHOLD = 750

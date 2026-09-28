@@ -25,7 +25,7 @@ import pandas as pd
 from PIL import Image
 
 from .data.inventory import parse_name
-from .data.targets import IGNORE, N_CLASSES, N_CLASSES4, class_names, patch_labels, zones_to_class
+from .data.targets import IGNORE, N_CLASSES, class_names, patch_labels, zones_to_class
 from .data.tiling import normalise_image
 from .features import split_of, zone_path_for
 from .probe import report

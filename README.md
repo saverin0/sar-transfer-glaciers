@@ -560,6 +560,9 @@ other libraries were not recorded; runtime pip installs are unpinned.
 - The CaFFe zip has no checksum. DINOv3, SARATR-X and TerraMind load without a
   revision pin. Runtime pip installs are unpinned. See
   [docs/results.md](docs/results.md#provenance-what-the-code-fetches).
+- The `weights_only` rule, the C-RADIO pin and hash table, the `.env` parser,
+  the empty sync cells and a secret scan are tested in CI on every push and
+  pull request (`.github/workflows/ci.yml`), together with ruff and `compileall`.
 
 ## Licences
 
