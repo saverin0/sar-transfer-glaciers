@@ -455,7 +455,6 @@ def run_final_unet(weights_path: Path, n_classes: int, test_imgs: list[dict], da
         conf = evaluate(model, test_imgs, device, preds=preds)
         # add per-glacier grouping on top of evaluate()'s groupings
         from .probe import report
-        from .data.targets import N_CLASSES
         from .baseline import _confusion, _patch_level
         mats = {"all": np.zeros((3, 3), np.int64)}
         for im in test_imgs:
@@ -494,7 +493,6 @@ def layer_sweep(encoder: str, norm: str, df: pd.DataFrame, data_root: Path, res_
     """
     import torch
 
-    from .data.targets import IGNORE
     from .data.tiling import TileSpec
     from .features import _prefetched, _prepare, _select
     from .models.encoders import ENCODERS, FrozenEncoder
@@ -516,7 +514,8 @@ def layer_sweep(encoder: str, norm: str, df: pd.DataFrame, data_root: Path, res_
         layers = sorted({max(1, round(n * f)) for f in (0.25, 0.5, 0.75, 0.875, 1.0)})
     print(f"{n} blocks; tapping layers {layers}")
     tspec = TileSpec(size=tile, overlap=0.0)
-    prep = lambda p_: _prepare(p_, data_root, tspec, norm, enc.patch)  # noqa: E731
+    # F821 is a false positive from the `del enc` at the end; the lambda only runs before it.
+    prep = lambda p_: _prepare(p_, data_root, tspec, norm, enc.patch)  # noqa: E731, F821
     rng = np.random.default_rng(seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"
 

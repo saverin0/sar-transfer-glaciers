@@ -37,3 +37,15 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 100
+
+[tool.ruff.lint]
+# ruff's classic default set, pinned here because newer ruff versions enable a
+# much larger default set and CI installs whatever version is current.
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E701", "E702", "E741"]   # one-liners and `l` as a name are style, not errors
+
+[tool.ruff.lint.per-file-ignores]
+"src/sartransfer/models/anyup/**" = ["ALL"]   # vendored, kept as published
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]   # tests import the package from src/ without installing it

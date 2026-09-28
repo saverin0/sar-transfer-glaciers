@@ -20,12 +20,16 @@ from __future__ import annotations
 import gc
 import time
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
 
 from .data.targets import IGNORE, N_CLASSES4, zones_to_class
 from .runs import FINAL_GROUPINGS, GROUPINGS, fronts_from_zone_maps, paper_zone_table
+
+if TYPE_CHECKING:                            # annotations only; torch stays a lazy import
+    import torch
 
 # Names as in the saved CSVs, kept: ROWS[4] "anyup-decoder" is class PixelHead, ROWS[6] "anyup128-decoder" is class AnyUpDecoder.
 ROWS = {1: "linear-grid", 2: "anyup-linear", 3: "grid-decoder", 4: "anyup-decoder",
@@ -375,7 +379,7 @@ def run_heads(encoder: str, norm: str, layer: int | tuple[int, ...], df: pd.Data
         if "seed" not in old:
             old["seed"] = 0
         done = set(zip(out.row, out.seed))
-        keep = [not (r, s) in done for r, s in zip(old.row, old.seed)]
+        keep = [(r, s) not in done for r, s in zip(old.row, old.seed)]
         merged = pd.concat([old[keep], out], ignore_index=True).sort_values(["row", "seed"])
     merged.to_csv(spath, index=False)
     return out                               # this call's rows only
@@ -391,7 +395,8 @@ def summary_table(res_dir: Path, split: str = "val") -> pd.DataFrame:
     import glob
 
     res_dir = Path(res_dir)
-    g0 = (FINAL_GROUPINGS if split == "test" else GROUPINGS)[0]   # as the run code: first grouping
+    # first grouping, as the run code. Read as @g0 in the query below, which ruff cannot see.
+    g0 = (FINAL_GROUPINGS if split == "test" else GROUPINGS)[0]   # noqa: F841
     rows = []
     for f in sorted(glob.glob(str(res_dir / f"heads_{split}_mde__*__row*.csv"))):
         tag = Path(f).stem.split(f"heads_{split}_mde__", 1)[1]
